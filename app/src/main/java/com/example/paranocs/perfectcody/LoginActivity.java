@@ -25,11 +25,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private String TAG = getClass().getName();
     private Context mContext;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private SignInButton signinButton;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -57,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -90,8 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(mContext, "로그인 성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(mContext, MainActivity.class);
-                            startActivity(intent);
+                            setDummy();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -106,6 +113,34 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void setDummy(){
+        FirebaseUser user = mAuth.getCurrentUser();
+        final String uid = user.getUid();
+        Query query = db.collection("users").whereEqualTo("uid", uid);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(!task.getResult().isEmpty()){
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    Map<String, Object> dummyItem = new HashMap<>();
+                    dummyItem.put("nickname", "NickName");
+                    dummyItem.put("uid", uid);
+                    dummyItem.put("name", "name");
+
+                    db.collection("users").document(uid).set(dummyItem).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent intent = new Intent(mContext, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
