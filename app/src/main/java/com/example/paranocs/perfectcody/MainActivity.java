@@ -2,8 +2,11 @@ package com.example.paranocs.perfectcody;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.paranocs.perfectcody.Adapters.MainViewPagerAdapter;
@@ -21,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView_profile;
     private MainViewPagerAdapter mainViewPagerAdapter;
 
-
     private VerticalViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         imageView_favorite = findViewById(R.id.imageView_favorite);
         imageView_profile = findViewById(R.id.imageView_profile);
         viewPager = (VerticalViewPager) findViewById(R.id.viewPager);
+
+        imageView_home.setOnClickListener(onClickListener);
+        imageView_search.setOnClickListener(onClickListener);
+        imageView_favorite.setOnClickListener(onClickListener);
+        imageView_profile.setOnClickListener(onClickListener);
+
 
         ArrayList<HashMap<String, Object>> items = new ArrayList<>();
         HashMap<String, Object> item = new HashMap<>();
@@ -55,4 +63,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.imageView_home:{
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    startActivity(intent);
+                }
+                break;
+
+                case R.id.imageView_search:{
+
+                }
+                break;
+                case R.id.imageView_favorite:{
+
+                }
+                break;
+                case R.id.imageView_profile:{
+
+                }
+                break;
+            }
+        }
+    };
 }
