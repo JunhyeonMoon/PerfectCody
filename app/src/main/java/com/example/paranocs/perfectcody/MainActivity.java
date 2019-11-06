@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -33,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private int REQUEST_PHOTO = 100;
+    private int PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,16 +124,15 @@ public class MainActivity extends AppCompatActivity {
                         //권한체크
                         int permissionCheck = ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
                         if(permissionCheck == PackageManager.PERMISSION_GRANTED){
-                            Toast.makeText(getApplicationContext(), "SMS 수신권한 있음", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "갤러리 권한 있음", Toast.LENGTH_SHORT).show();
+                            getPhoto();
                         }else {
-                            Toast.makeText(getApplicationContext(), "SMS 수신권한 없음", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(getApplicationContext(), "갤러리 권한 없음", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(
+                                    MainActivity.this,
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    PERMISSION_CODE);
                         }
-
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_PICK);
-                        startActivityForResult(intent, REQUEST_PHOTO);
                     }
                 }
                 break;
@@ -152,6 +154,24 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "cancel", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getPhoto();
+            }
+        }
+    }
+
+    private void getPhoto(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(intent, REQUEST_PHOTO);
     }
 
     private void uploadPhoto(String path){
@@ -177,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     //db에 업로드 정보갱신
                     Uri downloadUri = task.getResult();
                     Map<String, Object> data = new HashMap<>();
-                    data.put("uri", downloadUri);
+                    data.put("uri", downloadUri.toString());
                     data.put("good", 0);
                     data.put("bad", 0);
                     data.put("uid", uid);
@@ -212,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         userProfileFragment = new UserProfileFragment();
+        searchFragment = new SearchFragment();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, homeFragment).commit();
 
