@@ -2,6 +2,7 @@ package com.example.paranocs.perfectcody;
 
 import androidx.annotation.AnimatorRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,16 +19,17 @@ import org.w3c.dom.Text;
 public class FeedProfileActivity extends AppCompatActivity {
 
     Button button_follow;
-    TextView textView1;
-    TextView textView2;
+    RecyclerView recyclerView1;
+    RecyclerView recyclerView2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_profile);
 
-        textView1 = (TextView)findViewById(R.id.text1);
-        textView2 = (TextView)findViewById(R.id.text2);
+        recyclerView1 = (RecyclerView)findViewById(R.id.recyclerView1);
+        recyclerView2 = (RecyclerView)findViewById(R.id.recyclerView2);
 
         // 팔로우 <-> 언팔로우
         button_follow = (Button)findViewById(R.id.button_follow);
@@ -71,23 +73,18 @@ public class FeedProfileActivity extends AppCompatActivity {
             }
         });
 
-        // 시작 시 FrameLayout에 표시될 뷰를 결정하기 위해 textView2는 removeView()함수로 제거.
-        FrameLayout frameLayout = (FrameLayout)findViewById(R.id.contents);
-        frameLayout.removeView(textView2);
     }
 
     // FrameLayout 탭 전환
     private void changeView(int index) {
-        FrameLayout frameLayout = (FrameLayout)findViewById(R.id.contents);
-        // 0번째 뷰 제거. (뷰가 하나이기 때문에 0번째만 제거하면 모든 뷰가 제거됨.)
-        frameLayout.removeViewAt(0);
-
         switch (index) {
             case 0:
-                frameLayout.addView(textView1);
+                recyclerView1.setVisibility(View.VISIBLE);
+                recyclerView2.setVisibility(View.INVISIBLE);
                 break;
             case 1:
-                frameLayout.addView(textView2);
+                recyclerView1.setVisibility(View.INVISIBLE);
+                recyclerView2.setVisibility(View.VISIBLE);
                 break;
 
         }
