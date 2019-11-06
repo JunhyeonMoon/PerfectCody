@@ -4,6 +4,7 @@ package com.example.paranocs.perfectcody;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -14,9 +15,17 @@ import android.view.ViewGroup;
 
 import com.example.paranocs.perfectcody.Adapters.MainViewPagerAdapter;
 import com.example.paranocs.perfectcody.Utils.VerticalViewPager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -29,6 +38,11 @@ public class HomeFragment extends Fragment {
     private MainViewPagerAdapter mainViewPagerAdapter;
     private VerticalViewPager viewPager;
 
+    private ArrayList<Map<String, Object>> items = new ArrayList<>();
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -39,28 +53,44 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        viewPager = (VerticalViewPager) view.findViewById(R.id.viewPager);
-
-
-        //TODO:메인피드에 나올 사진리스트를 db에서 유저가 업로드한 사진들 중에서 가져오게 수정
-        ArrayList<HashMap<String, Object>> items = new ArrayList<>();
-        HashMap<String, Object> item = new HashMap<>();
-        item.put("aa", 11);
-        items.add(item);
-        items.add(item);
-        items.add(item);
-        mainViewPagerAdapter = new MainViewPagerAdapter(mContext, items);
-        viewPager.setAdapter(mainViewPagerAdapter);
-
-        Log.d(TAG, "viewPager current position " + viewPager.getCurrentItem());
-
+        init(view);
         return view;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    private void init(View view){
+        viewPager = (VerticalViewPager) view.findViewById(R.id.viewPager);
+        mainViewPagerAdapter = new MainViewPagerAdapter(mContext, items);
+        viewPager.setAdapter(mainViewPagerAdapter);
+        getPhotoFromDB();
+    }
+
+    private void getPhotoFromDB(){
+        items.clear();
+        Query query = db.collection(getString(R.string.db_photo)).orderBy("good", Query.Direction.DESCENDING);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        items.add(document.getData());
+                    }
+                    mainViewPagerAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 }
