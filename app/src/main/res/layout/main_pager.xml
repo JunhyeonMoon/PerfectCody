@@ -1,11 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/textView_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="comment number"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/imageView_comment"
+        app:layout_constraintStart_toStartOf="@id/imageView_comment"
+        app:layout_constraintEnd_toEndOf="@id/imageView_comment"/>
+    
+    <TextView
+        android:id="@+id/textView_bad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bad number"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/imageView_bad"
+        app:layout_constraintStart_toStartOf="@id/imageView_bad"
+        app:layout_constraintEnd_toEndOf="@id/imageView_bad"/>
+    
+    <TextView
+        android:id="@+id/textView_good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="good number"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/imageView_good"
+        app:layout_constraintStart_toStartOf="@id/imageView_good"
+        app:layout_constraintEnd_toEndOf="@id/imageView_good"/>
+
+    <ImageView
+        android:id="@+id/imageView_feedProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_favorite_black_24dp"
+        app:layout_constraintEnd_toEndOf="@id/imageView_good"
+        app:layout_constraintTop_toBottomOf="@id/imageView_comment"/>
+
+    <ImageView
+        android:id="@+id/imageView_comment"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_comment_black_24dp"
+        app:layout_constraintEnd_toEndOf="@id/imageView_good"
+        app:layout_constraintTop_toBottomOf="@id/imageView_bad"/>
+
+
+    <ImageView
+        android:id="@+id/imageView_bad"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_thumb_down_black_24dp"
+        app:layout_constraintEnd_toEndOf="@id/imageView_good"
+        app:layout_constraintTop_toBottomOf="@id/imageView_good"/>
+
+
+    <ImageView
+        android:id="@+id/imageView_good"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_thumb_up_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     data.put("uri", downloadUri.toString());
                     data.put("good", 0);
                     data.put("bad", 0);
+                    data.put("comment", 0);
                     data.put("uid", uid);
                     db.collection(getString(R.string.db_photo)).add(data);
                 }

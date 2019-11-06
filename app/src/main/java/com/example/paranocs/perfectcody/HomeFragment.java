@@ -79,16 +79,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void getPhotoFromDB(){
-        items.clear();
         Query query = db.collection(getString(R.string.db_photo)).orderBy("good", Query.Direction.DESCENDING);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        items.add(document.getData());
+                    if(task.getResult().getDocuments().size() > 0){
+                        items.clear();
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            Map<String, Object> docData = document.getData();
+                            docData.put("docID", document.getId());
+                            items.add(docData);
+                        }
+                        mainViewPagerAdapter.notifyDataSetChanged();
                     }
-                    mainViewPagerAdapter.notifyDataSetChanged();
                 }
             }
         });
