@@ -18,13 +18,16 @@ import org.w3c.dom.Text;
 public class FeedProfileActivity extends AppCompatActivity {
 
     Button button_follow;
-    TextView textView1 = (TextView)findViewById(R.id.text1);
-    TextView textView2 = (TextView)findViewById(R.id.text2);
+    TextView textView1;
+    TextView textView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_profile);
+
+        textView1 = (TextView)findViewById(R.id.text1);
+        textView2 = (TextView)findViewById(R.id.text2);
 
         // 팔로우 <-> 언팔로우
         button_follow = (Button)findViewById(R.id.button_follow);
@@ -33,11 +36,11 @@ public class FeedProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String buttonText = button_follow.getText().toString();
 
-                if(buttonText.equals("팔로우")) {
+                if(buttonText.equals("+팔로우")) {
                     button_follow.setText("언팔로우");
                     button_follow.setBackgroundColor(Color.GRAY);
                 } else {
-                    button_follow.setText("팔로우");
+                    button_follow.setText("+팔로우");
                     button_follow.setBackgroundColor(Color.RED);
                 }
             }
