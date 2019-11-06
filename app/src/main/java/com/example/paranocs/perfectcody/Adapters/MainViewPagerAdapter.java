@@ -7,16 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.paranocs.perfectcody.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 public class MainViewPagerAdapter extends PagerAdapter {
-    private ArrayList<HashMap<String, Object>> items = new ArrayList<>();
+    private ArrayList<Map<String, Object>> items = new ArrayList<>();
     private Context mContext;
 
-    public MainViewPagerAdapter(Context context, ArrayList<HashMap<String, Object>> items){
+    public MainViewPagerAdapter(Context context, ArrayList<Map<String, Object>> items){
         this.items = items;
         this.mContext = context;
     }
@@ -28,12 +29,12 @@ public class MainViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position){
-        View view = null;
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        view = inflater.inflate(R.layout.main_pager, container, false);
+        View view = inflater.inflate(R.layout.main_pager, container, false);
         ImageView imageView = view.findViewById(R.id.imageView);
-        imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.common_google_signin_btn_icon_light, mContext.getTheme()));
+
+        String uri = items.get(position).get("uri").toString();
+        Glide.with(mContext).load(uri).into(imageView);
         container.addView(view);
         return view;
     }
