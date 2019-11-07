@@ -220,10 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         if (cursor.moveToFirst()) {
             String s = cursor.getString(column_index);
-            cursor.close();
             return s;
         }
-        cursor.close();
         return null;
     }
 

@@ -6,4 +6,5 @@
     <color name="divideline">#413E3E</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGray">#7C7B7B</color>
 </resources>
