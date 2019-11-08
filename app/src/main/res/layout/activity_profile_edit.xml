@@ -6,4 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".ProfileEditActivity">
 
+    <ImageView
+        android:id="@+id/imageView_profile"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        app:srcCompat="@mipmap/ic_launcher_round"
+        tools:layout_editor_absoluteX="149dp"
+        tools:layout_editor_absoluteY="124dp" />
+
+    <TextView
+        android:id="@+id/edit_my_profile"
+        android:layout_width="138dp"
+        android:layout_height="34dp"
+        android:text="Edit My Profile"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+    <TextView
+        android:id="@+id/user_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Nickname"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="257dp" />
+
+    <TextView
+        android:id="@+id/edit_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Photo"
+        tools:layout_editor_absoluteX="175dp"
+        tools:layout_editor_absoluteY="299dp" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="395dp"
+        android:layout_height="1dp"
+        android:background="#FF0000"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="95dp" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="395dp"
+        android:layout_height="1dp"
+        android:background="#FF0000"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="343dp" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="395dp"
+        android:layout_height="1dp"
+        android:background="#FF0000"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="503dp" />
+
+    <TextView
+        android:id="@+id/user_nickname2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User nickname"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="359dp" />
+
+    <TextView
+        android:id="@+id/edit_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="edit nickname"
+        tools:layout_editor_absoluteX="303dp"
+        tools:layout_editor_absoluteY="359dp" />
+
+    <TextView
+        android:id="@+id/user_bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Bio"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="440dp" />
+
+    <TextView
+        android:id="@+id/edit_bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="edit bio"
+        tools:layout_editor_absoluteX="322dp"
+        tools:layout_editor_absoluteY="440dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
