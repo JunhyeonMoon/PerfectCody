@@ -4,19 +4,34 @@ package com.example.paranocs.perfectcody;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.paranocs.perfectcody.Adapters.MainViewPagerAdapter;
 import com.example.paranocs.perfectcody.Utils.VerticalViewPager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -28,6 +43,11 @@ public class HomeFragment extends Fragment {
 
     private MainViewPagerAdapter mainViewPagerAdapter;
     private VerticalViewPager viewPager;
+    private ArrayList<Map<String, Object>> items = new ArrayList<>();
+    private ProgressBar progressBar;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -39,28 +59,59 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        viewPager = (VerticalViewPager) view.findViewById(R.id.viewPager);
-
-
-        //TODO:메인피드에 나올 사진리스트를 db에서 유저가 업로드한 사진들 중에서 가져오게 수정
-        ArrayList<HashMap<String, Object>> items = new ArrayList<>();
-        HashMap<String, Object> item = new HashMap<>();
-        item.put("aa", 11);
-        items.add(item);
-        items.add(item);
-        items.add(item);
-        mainViewPagerAdapter = new MainViewPagerAdapter(mContext, items);
-        viewPager.setAdapter(mainViewPagerAdapter);
-
-        Log.d(TAG, "viewPager current position " + viewPager.getCurrentItem());
-
+        init(view);
         return view;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    private void init(View view){
+        progressBar = view.findViewById(R.id.progressBar);
+        viewPager = (VerticalViewPager) view.findViewById(R.id.viewPager);
+        mainViewPagerAdapter = new MainViewPagerAdapter(mContext, items);
+        viewPager.setAdapter(mainViewPagerAdapter);
+        getPhotoFromDB();
+    }
+
+    private void getPhotoFromDB(){
+        Query query = db.collection(getString(R.string.db_photo)).orderBy("good", Query.Direction.DESCENDING);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().getDocuments().size() > 0){
+                        loading(true);
+                        items.clear();
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            Map<String, Object> docData = document.getData();
+                            docData.put("docID", document.getId());
+                            items.add(docData);
+                        }
+                        mainViewPagerAdapter.notifyDataSetChanged();
+                        loading(false);
+                    }
+                }
+            }
+        });
+    }
+
+    private void loading(boolean b){
+        if(b){
+            progressBar.setVisibility(View.VISIBLE);
+        }else{
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }
