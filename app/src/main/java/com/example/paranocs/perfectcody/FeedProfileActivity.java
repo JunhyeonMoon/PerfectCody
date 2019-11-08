@@ -40,10 +40,10 @@ public class FeedProfileActivity extends AppCompatActivity {
 
                 if(buttonText.equals("+팔로우")) {
                     button_follow.setText("언팔로우");
-                    button_follow.setBackgroundColor(Color.GRAY);
+                    button_follow.setBackgroundColor(Color.rgb(112,112,112));
                 } else {
                     button_follow.setText("+팔로우");
-                    button_follow.setBackgroundColor(Color.RED);
+                    button_follow.setBackgroundColor(Color.rgb(255,109,109));
                 }
             }
         });
