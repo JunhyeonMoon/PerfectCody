@@ -16,56 +16,126 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-
-    <ImageView
+    <LinearLayout
         android:id="@+id/imageView_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_home_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageView_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline2" />
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-    <ImageView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:src="@drawable/home" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:gravity="center">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/imageView_search"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_search_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/imageView_home"
         app:layout_constraintEnd_toStartOf="@id/imageView_addPhoto"
         app:layout_constraintStart_toEndOf="@id/imageView_home"
-        app:layout_constraintTop_toTopOf="@id/imageView_home" />
+        app:layout_constraintTop_toTopOf="@id/imageView_home"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-    <ImageView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:src="@drawable/search" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:gravity="center">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/imageView_favorite"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_favorite_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/imageView_home"
         app:layout_constraintEnd_toStartOf="@id/imageView_profile"
         app:layout_constraintStart_toEndOf="@id/imageView_addPhoto"
-        app:layout_constraintTop_toTopOf="@id/imageView_home" />
+        app:layout_constraintTop_toTopOf="@id/imageView_home"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-    <ImageView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:src="@drawable/like" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Likes"
+            android:gravity="center">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/imageView_profile"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_person_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/imageView_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageView_favorite"
-        app:layout_constraintTop_toTopOf="@id/imageView_home" />
+        app:layout_constraintTop_toTopOf="@id/imageView_home"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-    <ImageView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:src="@drawable/avatar" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MyPage"
+            android:gravity="center">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/imageView_addPhoto"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_add_black_24dp"
+        android:src="@drawable/plus"
         app:layout_constraintBottom_toBottomOf="@id/imageView_home"
         app:layout_constraintEnd_toStartOf="@id/imageView_favorite"
         app:layout_constraintStart_toEndOf="@id/imageView_search"
-        app:layout_constraintTop_toTopOf="@id/imageView_home" />
+        app:layout_constraintTop_toTopOf="@id/imageView_home"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:src="@drawable/plus" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:gravity="center">
+        </TextView>
+    </LinearLayout>
 
 
 
