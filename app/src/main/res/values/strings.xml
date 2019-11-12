@@ -4,4 +4,6 @@
     <string name="storage_userPhoto">userPhoto</string>
     <string name="db_users">users</string>
     <string name="db_photo">userPhoto</string>
+    <string name="db_photo_comment">comments</string>
+    <string name="default_profile_url">https://firebasestorage.googleapis.com/v0/b/perfectcody-d2e77.appspot.com/o/profile%2Fdefault-profile.jpg?alt=media&amp;token=b3caf4a5-a98f-48c2-8133-31a1947f70cd</string>
 </resources>

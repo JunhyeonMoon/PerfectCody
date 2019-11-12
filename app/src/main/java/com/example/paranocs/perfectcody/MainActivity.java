@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private int REQUEST_PHOTO = 100;
+    private int PERMISSION_CODE = 101;
 
 //  애니메이션 효과 주기위한 변수
     private Animation scale;
@@ -116,16 +118,15 @@ public class MainActivity extends AppCompatActivity {
                         //권한체크
                         int permissionCheck = ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
                         if(permissionCheck == PackageManager.PERMISSION_GRANTED){
-                            Toast.makeText(getApplicationContext(), "SMS 수신권한 있음", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "갤러리 권한 있음", Toast.LENGTH_SHORT).show();
+                            getPhoto();
                         }else {
-                            Toast.makeText(getApplicationContext(), "SMS 수신권한 없음", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(getApplicationContext(), "갤러리 권한 없음", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(
+                                    MainActivity.this,
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    PERMISSION_CODE);
                         }
-
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_PICK);
-                        startActivityForResult(intent, REQUEST_PHOTO);
                     }
                 }
                 break;
@@ -147,6 +148,24 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "cancel", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getPhoto();
+            }
+        }
+    }
+
+    private void getPhoto(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(intent, REQUEST_PHOTO);
     }
 
     private void uploadPhoto(String path){
@@ -172,9 +191,10 @@ public class MainActivity extends AppCompatActivity {
                     //db에 업로드 정보갱신
                     Uri downloadUri = task.getResult();
                     Map<String, Object> data = new HashMap<>();
-                    data.put("uri", downloadUri);
+                    data.put("uri", downloadUri.toString());
                     data.put("good", 0);
                     data.put("bad", 0);
+                    data.put("comment", 0);
                     data.put("uid", uid);
                     db.collection(getString(R.string.db_photo)).add(data);
                 }
@@ -194,10 +214,8 @@ public class MainActivity extends AppCompatActivity {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         if (cursor.moveToFirst()) {
             String s = cursor.getString(column_index);
-            cursor.close();
             return s;
         }
-        cursor.close();
         return null;
     }
 
@@ -207,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         userProfileFragment = new UserProfileFragment();
+        searchFragment = new SearchFragment();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, homeFragment).commit();
 

@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String, Object> dummyItem = new HashMap<>();
                     dummyItem.put("nickname", "NickName");
                     dummyItem.put("uid", uid);
+                    dummyItem.put("profile", getString(R.string.default_profile_url));
                     dummyItem.put("name", "name");
 
                     db.collection("users").document(uid).set(dummyItem).addOnCompleteListener(new OnCompleteListener<Void>() {

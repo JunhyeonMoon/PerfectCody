@@ -3,9 +3,21 @@ package com.example.paranocs.perfectcody;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,8 +45,8 @@ public class HomeFragment extends Fragment {
 
     private MainViewPagerAdapter mainViewPagerAdapter;
     private VerticalViewPager viewPager;
-
     private ArrayList<Map<String, Object>> items = new ArrayList<>();
+    private ProgressBar progressBar;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -68,6 +80,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void init(View view){
+        progressBar = view.findViewById(R.id.progressBar);
         viewPager = (VerticalViewPager) view.findViewById(R.id.viewPager);
         mainViewPagerAdapter = new MainViewPagerAdapter(mContext, items);
         viewPager.setAdapter(mainViewPagerAdapter);
@@ -75,18 +88,32 @@ public class HomeFragment extends Fragment {
     }
 
     private void getPhotoFromDB(){
-        items.clear();
         Query query = db.collection(getString(R.string.db_photo)).orderBy("good", Query.Direction.DESCENDING);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        items.add(document.getData());
+                    if(task.getResult().getDocuments().size() > 0){
+                        loading(true);
+                        items.clear();
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            Map<String, Object> docData = document.getData();
+                            docData.put("docID", document.getId());
+                            items.add(docData);
+                        }
+                        mainViewPagerAdapter.notifyDataSetChanged();
+                        loading(false);
                     }
-                    mainViewPagerAdapter.notifyDataSetChanged();
                 }
             }
         });
+    }
+
+    private void loading(boolean b){
+        if(b){
+            progressBar.setVisibility(View.VISIBLE);
+        }else{
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }
