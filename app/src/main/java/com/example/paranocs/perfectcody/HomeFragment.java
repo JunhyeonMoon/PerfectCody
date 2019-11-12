@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.paranocs.perfectcody.Adapters.MainViewPagerAdapter;
 import com.example.paranocs.perfectcody.Utils.VerticalViewPager;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +33,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 

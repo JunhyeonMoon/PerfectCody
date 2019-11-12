@@ -1,6 +1,7 @@
 package com.example.paranocs.perfectcody;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -14,24 +15,24 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.paranocs.perfectcody.Adapters.MainViewPagerAdapter;
-import com.example.paranocs.perfectcody.Utils.VerticalViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -40,24 +41,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = getClass().getName();
     private Context mContext;
-    private ImageView imageView_home;
-    private ImageView imageView_search;
-    private ImageView imageView_favorite;
-    private ImageView imageView_profile;
-    private ImageView imageView_addPhoto;
+    private LinearLayout imageView_home;
+    private LinearLayout imageView_search;
+    private LinearLayout imageView_favorite;
+    private LinearLayout imageView_profile;
+    private LinearLayout imageView_addPhoto;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -72,10 +67,15 @@ public class MainActivity extends AppCompatActivity {
     private int REQUEST_PHOTO = 100;
     private int PERMISSION_CODE = 101;
 
+//  애니메이션 효과 주기위한 변수
+    private Animation scale;
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        scale = AnimationUtils.loadAnimation(this, R.anim.gps_button_animation);
         init();
     }
 
@@ -92,21 +92,23 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.imageView_home:{
+                    v.startAnimation(scale);
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentContainer, homeFragment).commit();
                 }
                 break;
-
                 case R.id.imageView_search:{
+                    v.startAnimation(scale);
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentContainer, searchFragment).commit();
                 }
                 break;
                 case R.id.imageView_favorite:{
-
+                    v.startAnimation(scale);
                 }
                 break;
                 case R.id.imageView_profile:{
+                    v.startAnimation(scale);
                     if(mAuth.getCurrentUser() == null){
                         Intent intent = new Intent(mContext, LoginActivity.class);
                         startActivity(intent);
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
                 case R.id.imageView_addPhoto:{
+                    v.startAnimation(scale);
                     if(mAuth.getCurrentUser() == null){
                         Intent intent = new Intent(mContext, LoginActivity.class);
                         startActivity(intent);
