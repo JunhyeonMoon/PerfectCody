@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -44,7 +45,7 @@ public class FeedProfileActivity extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private ImageView imageView_profile;
-    private Button button_follow;
+    private LinearLayout layout_follow;
     private TextView textView_nickname;
     private TextView textView_profileInfo;
     private TabLayout tabLayout;
@@ -97,9 +98,9 @@ public class FeedProfileActivity extends AppCompatActivity {
         textView_nickname = findViewById(R.id.textView_nickname);
         textView_profileInfo = findViewById(R.id.textView_profileInfo);
         tabLayout = findViewById(R.id.tab_layout);
-        button_follow = findViewById(R.id.button_follow);
+        layout_follow = findViewById(R.id.layout_follow);
 
-        button_follow.setOnClickListener(onClickListener);
+        layout_follow.setOnClickListener(onClickListener);
 
         recyclerView1 = findViewById(R.id.recyclerView1);
         recyclerView2 = findViewById(R.id.recyclerView2);
@@ -144,7 +145,6 @@ public class FeedProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void getPhotoFromDB(){
@@ -179,7 +179,7 @@ public class FeedProfileActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch(v.getId()){
-                case R.id.button_follow : {
+                case R.id.layout_follow : {
                    //TODO 팔로우
                 }
                 break;

@@ -2,6 +2,7 @@
     <string name="app_name">PerfectCody</string>
 
     <string name="storage_userPhoto">userPhoto</string>
+    <string name="storage_userProfile">profile</string>
     <string name="db_users">users</string>
     <string name="db_photo">userPhoto</string>
     <string name="db_photo_comment">comments</string>
