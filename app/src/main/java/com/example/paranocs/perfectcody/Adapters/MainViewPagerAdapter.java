@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.paranocs.perfectcody.FeedProfileActivity;
 import com.example.paranocs.perfectcody.LoginActivity;
 import com.example.paranocs.perfectcody.R;
+import com.example.paranocs.perfectcody.Utils.SingleTon;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,18 +35,25 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.squareup.okhttp.internal.Internal;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainViewPagerAdapter extends PagerAdapter {
     private String TAG = getClass().getName();
-    private View mCurrentView;
     private ArrayList<Map<String, Object>> items = new ArrayList<>();
     private ArrayList<Map<String, Object>> commentItems = new ArrayList<>();
+    private ArrayList<String> goodUid = new ArrayList<>();
+    private ArrayList<String> badUid = new ArrayList<>();
+
     private Context mContext;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private SingleTon singleTon;
+    private boolean isCheckGood = false;
+    private boolean isCheckbad = false;
 
     private ImageView imageView;
     private ImageView imageView_good;
@@ -90,19 +98,48 @@ public class MainViewPagerAdapter extends PagerAdapter {
         View view = (View)object;
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        singleTon = SingleTon.getInstance();
         init(view, position);
         String uri = items.get(position).get("uri").toString();
         Glide.with(mContext).load(uri).into(imageView);
 
         db.document(mContext.getString(R.string.db_users) + "/" +
-                toString(items.get(position).get("uid"))).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                singleTon.toString(items.get(position).get("uid"))).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     Map<String, Object> docData = task.getResult().getData();
-                    Glide.with(mContext).load(docData.get("profile").toString()).into(imageView_feedProfile);
+                    Glide.with(mContext).load(singleTon.toString(docData.get("profile"))).into(imageView_feedProfile);
                     imageView_feedProfile.setBackground(new ShapeDrawable(new OvalShape()));
                     imageView_feedProfile.setClipToOutline(true);
+                }
+            }
+        });
+
+        db.document(mContext.getString(R.string.db_photo) + "/" +
+                singleTon.toString(items.get(position).get("docID")))
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    Map<String, Object> docData = task.getResult().getData();
+                    if(docData.containsKey("goodUid")){
+                        goodUid = (ArrayList<String>) docData.get("goodUid");
+                        String uid = mAuth.getCurrentUser().getUid();
+                        if(goodUid.contains(uid)){
+                            isCheckGood = true;
+                            imageView_good.setImageResource(R.drawable.ic_thumb_up_red_24dp);
+                        }
+                    }
+
+                    if(docData.containsKey("badUid")){
+                        badUid = (ArrayList<String>) docData.get("badUid");
+                        String uid = mAuth.getCurrentUser().getUid();
+                        if(badUid.contains(uid)){
+                            isCheckbad = true;
+                            imageView_bad.setImageResource(R.drawable.ic_thumb_down_red_24dp);
+                        }
+                    }
                 }
             }
         });
@@ -142,34 +179,92 @@ public class MainViewPagerAdapter extends PagerAdapter {
         recyclerView_comment.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView_comment.setAdapter(commentRecyclerViewAdapter);
 
-        final String docID = toString(items.get(position).get("docID"));
-        final String uid = toString(items.get(position).get("uid"));
+        final String docID = singleTon.toString(items.get(position).get("docID"));
+        final String uid = singleTon.toString(items.get(position).get("uid"));
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.imageView_bad:
+                    case R.id.imageView_bad : {
+                        Map<String, Object> data = new HashMap<>();
+                        int bad_int = Integer.parseInt(items.get(position).get("bad").toString());
+                        if(!isCheckbad){
+                            bad_int++;
+                            items.get(position).put("bad", bad_int);
+                            data.put("bad", bad_int);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(data);
+
+                            String userID = mAuth.getCurrentUser().getUid();
+
+                            Map<String, Object> newData = new HashMap<>();
+                            badUid.add(userID);
+                            newData.put("badUid", badUid);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(newData);
+
+                            textView_bad.setText(Integer.toString(bad_int));
+                            isCheckbad = true;
+
+                            imageView_bad.setImageResource(R.drawable.ic_thumb_down_red_24dp);
+                        }else{
+                            bad_int--;
+                            items.get(position).put("bad", bad_int);
+                            data.put("bad", bad_int);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(data);
+
+                            Map<String, Object> newData = new HashMap<>();
+                            badUid.remove(mAuth.getCurrentUser().getUid());
+                            newData.put("badUid", badUid);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(newData);
+
+                            textView_bad.setText(Integer.toString(bad_int));
+                            isCheckbad = false;
+
+                            imageView_bad.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                        }
+                    }
+                    break;
                     case R.id.imageView_good : {
                         Map<String, Object> data = new HashMap<>();
-                        String target = "";
-                        if(v.getId() == R.id.imageView_good){
-                            target = "good";
-                        }else if(v.getId() == R.id.imageView_bad){
-                            target = "bad";
-                        }
-                        Log.d(TAG, "docID: " + docID);
+                        int good_int = Integer.parseInt(items.get(position).get("good").toString());
+                        if(!isCheckGood){
+                            good_int++;
+                            items.get(position).put("good", good_int);
+                            data.put("good", good_int);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(data);
 
-                        int target_int = Integer.parseInt(items.get(position).get(target).toString());
-                        target_int++;
-                        items.get(position).put(target, target_int);
-                        data.put(target, target_int);
-                        db.document(mContext.getString(R.string.db_photo) + "/"
-                                + docID).update(data);
+                            String userID = mAuth.getCurrentUser().getUid();
+                            Map<String, Object> newData = new HashMap<>();
+                            goodUid.add(userID);
+                            newData.put("goodUid", goodUid);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(newData);
 
-                        if(target.equals("good")){
-                            textView_good.setText(Integer.toString(target_int));
-                        }else if(target.equals("bad")){
-                            textView_bad.setText(Integer.toString(target_int));
+                            textView_good.setText(Integer.toString(good_int));
+                            isCheckGood = true;
+                            imageView_good.setImageResource(R.drawable.ic_thumb_up_red_24dp);
+                        }else{
+                            good_int--;
+                            items.get(position).put("good", good_int);
+                            data.put("good", good_int);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(data);
+
+
+                            String userID = mAuth.getCurrentUser().getUid();
+                            Map<String, Object> newData = new HashMap<>();
+                            goodUid.remove(userID);
+                            newData.put("goodUid", goodUid);
+                            db.document(mContext.getString(R.string.db_photo) + "/"
+                                    + docID).update(newData);
+
+                            textView_good.setText(Integer.toString(good_int));
+                            isCheckGood = false;
+                            imageView_good.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                         }
                     }
                     break;
@@ -234,13 +329,9 @@ public class MainViewPagerAdapter extends PagerAdapter {
         imageView_addComment.setOnClickListener(onClickListener);
         imageView_closeComment.setOnClickListener(onClickListener);
 
-        textView_good.setText(toString(items.get(position).get("good")));
-        textView_bad.setText(toString(items.get(position).get("bad")));
-        textView_comment.setText(toString(items.get(position).get("comment")));
-    }
-
-    private String toString(Object o){
-        return o != null ? o.toString() : "0";
+        textView_good.setText(singleTon.toString(items.get(position).get("good")));
+        textView_bad.setText(singleTon.toString(items.get(position).get("bad")));
+        textView_comment.setText(singleTon.toString(items.get(position).get("comment")));
     }
 
 }

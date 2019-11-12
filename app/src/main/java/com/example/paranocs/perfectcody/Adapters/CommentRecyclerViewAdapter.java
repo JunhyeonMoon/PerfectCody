@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.paranocs.perfectcody.R;
+import com.example.paranocs.perfectcody.Utils.SingleTon;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -59,8 +60,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final CommentViewHolder mHolder = (CommentViewHolder) holder;
-        String uid = toString(items.get(position).get("uid"));
-        String comment = toString(items.get(position).get("comment"));
+        String uid = SingleTon.getInstance().toString(items.get(position).get("uid"));
+        String comment = SingleTon.getInstance().toString(items.get(position).get("comment"));
         db.document(mContext.getString(R.string.db_users) + "/" + uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -81,7 +82,4 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter {
         return items.size();
     }
 
-    private String toString(Object o){
-        return o != null ? o.toString() : "0";
-    }
 }

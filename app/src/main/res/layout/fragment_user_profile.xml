@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileFragment"
-    android:background="#4C494E">
+    android:background="#4C494E"
+    tools:context=".UserProfileFragment">
 
     <ImageView
         android:id="@+id/header_image"
         android:layout_width="match_parent"
         android:layout_height="125dp"
-        android:src="@drawable/header_image"
         android:scaleType="fitXY"
+        android:src="@drawable/header_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_follow"
+        android:id="@+id/button_profileEdit"
         android:layout_width="125dp"
         android:layout_height="50dp"
         android:layout_marginEnd="5dp"
@@ -38,16 +38,16 @@
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/button_share"
+        app:layout_constraintEnd_toStartOf="@id/button_closet"
         app:layout_constraintTop_toTopOf="@id/guideline1" />
 
     <Button
-        android:id="@+id/button_share"
+        android:id="@+id/button_closet"
         android:layout_width="75dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/round_button3"
-        android:text="..."
+        android:text="내옷장"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -84,8 +84,8 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:text="프로필 정보"
-        android:textSize="20sp"
         android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline2" />
 
@@ -93,10 +93,10 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/guideline3"
+        app:tabTextColor="#FFFFFF">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabItem1"
@@ -112,25 +112,26 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <FrameLayout
-        android:id="@+id/contents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tab_layout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-
-    </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
