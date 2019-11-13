@@ -18,38 +18,40 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageView"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerInParent="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="80dp"
         android:src="@drawable/profile_icon"
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/guideline1"
+        app:layout_constraintBottom_toBottomOf="@id/guideline1"/>
 
     <Button
         android:id="@+id/button_profileEdit"
-        android:layout_width="125dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:background="@drawable/round_button1"
         android:text="프로필 편집"
         android:textColor="#ffffff"
         android:textSize="20sp"
+        android:padding="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/button_closet"
         app:layout_constraintTop_toTopOf="@id/guideline1" />
 
     <Button
         android:id="@+id/button_closet"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/round_button3"
         android:text="내옷장"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
+        android:padding="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline1" />
@@ -58,14 +60,14 @@
         android:id="@+id/textView_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp"
         android:text="유저 닉네임"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/circleImageView"
+        app:layout_constraintEnd_toEndOf="@id/circleImageView"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
 
     <View
@@ -81,12 +83,12 @@
         android:id="@+id/textView_profileInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:text="프로필 정보"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/textView_nickname"
+        app:layout_constraintEnd_toEndOf="@id/textView_nickname"
         app:layout_constraintTop_toBottomOf="@id/guideline2" />
 
     <com.google.android.material.tabs.TabLayout

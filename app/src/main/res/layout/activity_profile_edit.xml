@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/header_image"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="0dp"
         android:scaleType="fitXY"
         android:src="@drawable/middle_image"
         app:layout_constraintBottom_toBottomOf="@+id/guideline2"
@@ -19,8 +19,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageView"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerInParent="true"
         android:src="@drawable/profile_icon"
         app:civ_border_width="2dp"
@@ -31,8 +31,8 @@
 
     <TextView
         android:id="@+id/edit_my_profile"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Edit My Profile"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -43,12 +43,11 @@
 
     <View
         android:id="@+id/divider1"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="623dp"
         android:background="#868e96"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="@id/guideline1"
+        app:layout_constraintBottom_toBottomOf="@id/guideline1"/>
 
     <TextView
         android:id="@+id/user_nickname"
@@ -76,12 +75,11 @@
 
     <View
         android:id="@+id/divider2"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="380dp"
         android:background="#868e96"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="@id/guideline2"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"/>
 
     <TextView
         android:id="@+id/user_nickname2"
@@ -135,33 +133,32 @@
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="280dp"
         android:background="#868e96"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"  />
+        app:layout_constraintTop_toTopOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="625dp" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="380dp" />
+        app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="280dp" />
+        app:layout_constraintGuide_percent="0.65" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

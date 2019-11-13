@@ -229,6 +229,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     Map<String, Object> data = new HashMap<>();
                     data.put("profile", downloadUri.toString());
                     db.document(getString(R.string.db_users) + "/" + uid).update(data);
+                    getUserDataFromDB();
                 }
             }
         });

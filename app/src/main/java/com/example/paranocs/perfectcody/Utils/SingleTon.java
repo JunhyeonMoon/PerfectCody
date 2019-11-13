@@ -2,6 +2,7 @@ package com.example.paranocs.perfectcody.Utils;
 
 public class SingleTon {
     private SingleTon(){}
+    public String uri = "";
 
     private static class SingleTonHolder {
         private static final SingleTon INSTANCE = new SingleTon();

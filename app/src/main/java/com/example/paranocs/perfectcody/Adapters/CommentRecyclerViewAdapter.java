@@ -19,8 +19,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
-import org.w3c.dom.Comment;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -61,7 +59,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final CommentViewHolder mHolder = (CommentViewHolder) holder;
         String uid = SingleTon.getInstance().toString(items.get(position).get("uid"));
-        String comment = SingleTon.getInstance().toString(items.get(position).get("comment"));
+        final String comment = SingleTon.getInstance().toString(items.get(position).get("comment"));
         db.document(mContext.getString(R.string.db_users) + "/" + uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -71,10 +69,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter {
                     Map<String, Object> docData = task.getResult().getData();
                     mHolder.textView_nickname.setText(docData.get("nickname").toString());
                     Glide.with(mContext).load(docData.get("profile").toString()).into(mHolder.imageView_profile);
+                    mHolder.textView_comment.setText(comment);
                 }
             }
         });
-        mHolder.textView_comment.setText(comment);
     }
 
     @Override

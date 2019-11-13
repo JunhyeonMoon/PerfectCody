@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,15 +33,24 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.paranocs.perfectcody.Utils.SingleTon;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -67,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int REQUEST_PHOTO = 100;
     private int PERMISSION_CODE = 101;
+
+    RequestQueue queue;
 
 //  애니메이션 효과 주기위한 변수
     private Animation scale;
@@ -106,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
                 case R.id.imageView_favorite:{
                     v.startAnimation(scale);
+                    sendRequest();
                 }
                 break;
                 case R.id.imageView_profile:{
@@ -229,6 +242,37 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    private void sendRequest(){
+        String url = "https://5f6cubbbhi.execute-api.ap-northeast-2.amazonaws.com/version1";
+        String filename = "model1.jpg";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("uri", SingleTon.getInstance().uri);
+            jsonObject.put("filename", filename);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Response: " + response.toString());
+                        Intent intent = new Intent(mContext, CheckImageDetectionActivity.class);
+                        intent.putExtra("uri", SingleTon.getInstance().uri);
+                        startActivity(intent);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        queue.add(jsonObjectRequest);
+    }
+
     private void init(){
         mContext = getApplicationContext();
         fragmentManager = getSupportFragmentManager();
@@ -238,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         searchFragment = new SearchFragment();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, homeFragment).commit();
+        queue = Volley.newRequestQueue(this);
 
         imageView_home = findViewById(R.id.imageView_home);
         imageView_search = findViewById(R.id.imageView_search);
