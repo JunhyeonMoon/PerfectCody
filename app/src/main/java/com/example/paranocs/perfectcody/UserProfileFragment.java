@@ -30,6 +30,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -46,10 +48,9 @@ public class UserProfileFragment extends Fragment {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private ImageView imageView_profile;
-    private Button buton_profileEdit;
-    private Button button_closet;
+    private TextView textView_profileEdit;
+    private TextView textView_closet;
     private TextView textView_nickname;
-    private TextView textView_profileInfo;
     private TabLayout tabLayout;
 
 
@@ -94,10 +95,9 @@ public class UserProfileFragment extends Fragment {
 
     private void init(View view){
         imageView_profile = view.findViewById(R.id.circleImageView);
-        buton_profileEdit= view.findViewById(R.id.button_profileEdit);
-        button_closet = view.findViewById(R.id.button_closet);
+        textView_profileEdit= view.findViewById(R.id.textView_profileEdit);
+        textView_closet = view.findViewById(R.id.textView_myCloset);
         textView_nickname = view.findViewById(R.id.textView_nickname);
-        textView_profileInfo = view.findViewById(R.id.textView_profileInfo);
         tabLayout = view.findViewById(R.id.tab_layout);
 
         recyclerView1 = view.findViewById(R.id.recyclerView1);
@@ -109,8 +109,8 @@ public class UserProfileFragment extends Fragment {
         recyclerView1.setAdapter(userPhotoRecyclerViewAdapter1);
         recyclerView2.setAdapter(userPhotoRecyclerViewAdapter2);
 
-        buton_profileEdit.setOnClickListener(onClickListener);
-        button_closet.setOnClickListener(onClickListener);
+        textView_profileEdit.setOnClickListener(onClickListener);
+        textView_closet.setOnClickListener(onClickListener);
         imageView_profile.setOnClickListener(onClickListener);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -198,12 +198,12 @@ public class UserProfileFragment extends Fragment {
                     //TODO 갤러리 연결해서 프로필 이미지수정
                 }
                 break;
-                case R.id.button_profileEdit: {
+                case R.id.textView_profileEdit: {
                     Intent intent = new Intent(mContext, ProfileEditActivity.class);
                     startActivity(intent);
                 }
                 break;
-                case R.id.button_closet : {
+                case R.id.textView_myCloset : {
                     Intent intent = new Intent(mContext, MyClosetActivity.class);
                     startActivity(intent);
                 }

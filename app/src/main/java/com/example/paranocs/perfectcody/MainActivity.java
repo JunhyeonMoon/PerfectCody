@@ -106,12 +106,14 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()){
                 case R.id.imageView_home:{
                     v.startAnimation(scale);
+                    homeFragment = new HomeFragment();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentContainer, homeFragment).commit();
                 }
                 break;
                 case R.id.imageView_search:{
                     v.startAnimation(scale);
+                    searchFragment = new SearchFragment();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentContainer, searchFragment).commit();
                 }
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(mContext, LoginActivity.class);
                         startActivity(intent);
                     }else{
+                        userProfileFragment = new UserProfileFragment();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.fragmentContainer, userProfileFragment).commit();
                     }

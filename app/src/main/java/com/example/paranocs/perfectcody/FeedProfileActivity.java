@@ -47,7 +47,6 @@ public class FeedProfileActivity extends AppCompatActivity {
     private ImageView imageView_profile;
     private LinearLayout layout_follow;
     private TextView textView_nickname;
-    private TextView textView_profileInfo;
     private TabLayout tabLayout;
 
     private RecyclerView recyclerView1;
@@ -96,7 +95,6 @@ public class FeedProfileActivity extends AppCompatActivity {
     private void init(){
         imageView_profile = findViewById(R.id.circleImageView);
         textView_nickname = findViewById(R.id.textView_nickname);
-        textView_profileInfo = findViewById(R.id.textView_profileInfo);
         tabLayout = findViewById(R.id.tab_layout);
         layout_follow = findViewById(R.id.layout_follow);
 
