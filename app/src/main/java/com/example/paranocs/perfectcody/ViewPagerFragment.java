@@ -250,6 +250,10 @@ public class ViewPagerFragment extends Fragment {
                                         for(QueryDocumentSnapshot document : task.getResult()){
                                             commentItems.add(document.getData());
                                         }
+                                        Map<String, Object> commentSize = new HashMap<>();
+                                        commentSize.put("comment", commentItems.size());
+                                        db.document(getString(R.string.db_photo) + "/" + singleTon.toString(item.get("docID")))
+                                                .update(commentSize);
                                         commentRecyclerViewAdapter.notifyDataSetChanged();
                                     }
                                 }
@@ -321,6 +325,18 @@ public class ViewPagerFragment extends Fragment {
                 }
             }
         });
+
+        db.document(getString(R.string.db_photo) + "/" + singleTon.toString(item.get("docID")))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Map<String ,Object> docData = task.getResult().getData();
+                            textView_commentNum.setText("댓글 " + singleTon.toString(docData.get("comment")) + "개");
+                        }
+                    }
+                });
 
         if(mAuth.getCurrentUser() != null) {
             db.document(mContext.getString(R.string.db_photo) + "/" +
