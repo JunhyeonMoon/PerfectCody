@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CodyRecommendationActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline1"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI 의상 분석 결과가 잘못된 경우\n수정이 가능합니다"
+        android:textColor="@color/colorBlack"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@id/guideline1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/button_recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI 코디추천받기"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:padding="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/round_button1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_recommend"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView_pattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상의 패턴"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                />
+
+
+            <Spinner
+                android:id="@+id/spinner_pattern"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textView_upper_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상의 종류"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"/>
+
+            <Spinner
+                android:id="@+id/spinner_upper_category"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textView_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="옷 종류"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"/>
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textView_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="옷 색상"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                />
+
+            <ImageView
+                android:id="@+id/imageView_color"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:background="@color/colorBlack"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_percent="0.5" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,12 +6,14 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -33,6 +35,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,7 +47,9 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -98,6 +103,45 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+
+        if(mAuth.getCurrentUser() != null){
+            String uid = mAuth.getCurrentUser().getUid();
+            final String dbPath = getString(R.string.db_users) + "/" + uid;
+            db.document(dbPath).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Map<String, Object> docData = task.getResult().getData();
+                        if(!docData.containsKey("gender")){
+                            final CharSequence[] genders = {"남성", "여성"};
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("성별을 알려주세요");
+                            builder.setItems(genders, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int pos) {
+                                    Map<String, Object> data = new HashMap<>();
+                                    if(pos == 0){
+                                        data.put("gender", "M");
+                                        db.document(dbPath).set(data, SetOptions.merge());
+                                    }else{
+                                        data.put("gender", "F");
+                                        db.document(dbPath).set(data, SetOptions.merge());
+                                    }
+                                }
+                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        }
+
+                        if(!docData.containsKey("Casual") && docData.containsKey("gender")){
+                            Intent intent = new Intent(mContext, CheckStyleActivity.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                }
+            });
+        }
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -246,11 +290,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendRequest(){
+
         String url = "https://5f6cubbbhi.execute-api.ap-northeast-2.amazonaws.com/version1";
         String filename = "model1.jpg";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("uri", SingleTon.getInstance().uri);
+            //jsonObject.put("uri", SingleTon.getInstance().uri);
+            jsonObject.put("uri", "https://firebasestorage.googleapis.com/v0/b/perfectcody-d2e77.appspot.com/o/KakaoTalk_20191203_202430152.jpg?alt=media&token=07507567-9123-4e5d-85ef-7462761a8f6b");
             jsonObject.put("filename", filename);
 
 
@@ -264,15 +310,30 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, "Response: " + response.toString());
                         Intent intent = new Intent(mContext, CheckImageDetectionActivity.class);
+
+                        try {
+                            //박스좌표 숫자 4개
+                            // 2개씩 끊어서 왼쪽위, 오른쪽아래 좌표인듯
+                            Log.d(TAG, "onResponse: " + response.get("boxing_info"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                         intent.putExtra("uri", SingleTon.getInstance().uri);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Log.d(TAG, "Response error : " + error);
                     }
                 });
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                20000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonObjectRequest);
     }
 

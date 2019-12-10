@@ -13,12 +13,32 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CheckImageDetectionActivity"></activity>
-        <activity android:name=".MyClosetActivity" />
-        <activity android:name=".ProfileEditActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".FeedProfileActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".CheckStyleActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CodyRecommendationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CheckImageDetectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyClosetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FeedProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

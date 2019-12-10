@@ -3,9 +3,20 @@
 
     <string name="storage_userPhoto">userPhoto</string>
     <string name="storage_userProfile">profile</string>
+    <string name="storage_closet">closet</string>
+    <string name="storage_codySet">ImageSet</string>
+    <string name="storage_manCasual">Man_Casual</string>
+    <string name="storage_manDandy">Man_Dandy</string>
+    <string name="storage_manStreet">Man_Street</string>
+    <string name="storage_womanCasual">Woman_Casual</string>
+    <string name="storage_womanDandy">Woman_Dandy</string>
+    <string name="storage_womanStreet">Woman_Street</string>
+    <string name="storage_path">gs://perfectcody-d2e77.appspot.com</string>
+
     <string name="db_users">users</string>
     <string name="db_photo">userPhoto</string>
     <string name="db_photo_comment">comments</string>
+    <string name="db_closet">closet</string>
     <string name="default_profile_url">https://firebasestorage.googleapis.com/v0/b/perfectcody-d2e77.appspot.com/o/profile%2Fdefault-profile.jpg?alt=media&amp;token=b3caf4a5-a98f-48c2-8133-31a1947f70cd</string>
 
     <!-- TODO: Remove or change this placeholder text -->
